@@ -108,3 +108,5 @@ The initial user experience will consist of a **Landing Page**, **Authentication
 | Single OAuth Login | Base | ✅ Yes |
 | Home Page | Base | ✅ Yes |
 | Log Out | Base | ✅ Yes |
+
+---
