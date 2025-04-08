@@ -1,87 +1,61 @@
-### Agile Sprint 2 Demo Script
+Hey All,
 
-#### Introduction
-Welcome everyone! Today, we'll demonstrate the functionality we've developed for Sprint 2, focusing on the **Career History Management** module.
+I hope everyone is enjoying their spring break. And yeah, your break is nearly over and it's time to think about class again. This Tuesday we will be completing sprint 1 and kicking off sprint 2. Sprint 1 ends with each team giving a demo of their work. You don't need to write a PowerPoint, but you do have to show off your app. Here's the script each team will follow:
 
-#### Backend API Demonstration
+#### Getting Started
 
-**1. Upload Resume (Core Requirement)**
-- Demonstrate uploading a DOCX file through the `POST /api/resumes/upload` endpoint.
-- Show response containing the `resumeId` and `status: processing`.
+- We will be running the demo as a "blackbox", i.e. showing capabilities via the UX
+- Make sure that everyone on the team's device is capable of running the demo
+- Describe and new technologies you have added to your application and describe how are managing user's career history.
 
-**Stretch:**
-- Demonstrate support for uploading and processing a PDF file.
+#### Frontend Demonstration (Core Functionality)
 
-**2. Submit Free-Form Career History (Core Requirement)**
-- Demonstrate submitting free-form career history text via `POST /api/resumes/history`.
-- Show response confirming storage with a `historyId` and status "saved".
-
-**3. Retrieve Stored Career History (Core Requirement)**
-- Fetch the stored career history with a `GET /api/resumes/history` request.
-- Clearly show the returned structured job experiences.
-
-**Stretch:**
-- Highlight the inclusion of an "accomplishments" list in the response.
-
-**4. Retrieve User's Education Information (Core Requirement)**
-- Fetch stored education details via `GET /api/resumes/education`.
-- Demonstrate the structured data response with degrees, institutions, dates, and GPA.
-
-**Stretch APIs Demonstration (Optional for Bonus Points)**
-- Demonstrate updating career information using your designed endpoint: `POST /api/resumes/career/{id}`.
-- Demonstrate updating education information using your designed endpoint: `POST /api/resumes/education/{id}`.
-
-#### Frontend Demonstration
-
-**1. Basic Application Layout (Core Requirement)**
-- Display the standard page layout including:
+**1. Basic Application Layout**
+- Login a user onto your app to display these requirements:
   - Banner with application name
   - User's name clearly displayed
   - Functional logout button/link
   - Navigation system (dropdown or side panel)
 
-**Stretch:**
-- Showcase custom-designed logo
+**Stretch items:**
+- Custom-designed logo
 - User avatar displayed
 - Show/hide functionality for navigation panel
 - Settings/preferences page
-- Demonstrate collection of name/contact information
+- Collection of name/contact information
 - Theme toggle (light/dark), respecting system preference
 
-**2. Resume Upload Interface (Core Requirement)**
-- Show file upload interface accepting DOCX files.
-- Demonstrate progress indicator and upload notifications.
+**2. Resume Upload Interface**
+- Upload a Word resume in .docx format via the frontend interface.
+- Show upload progress indicator and confirm successful parsing/storage via frontend notification.
 
-**Stretch:**
-- Demonstrate PDF file upload capability.
+**Stretch item:**
+- Upload and demonstrate successful parsing of a .pdf file.
 
-**3. Free-form Career History Submission and Display (Core Requirement)**
-- Enter career details manually and submit.
-- Display a formatted, scrollable timeline view clearly showing:
+**3. Free-form Career History Submission and Display**
+- Manually enter career details via frontend submission form. **NOTE!** have this text ready in Notepad or a text editor to copy and paste into the form.
+- Display the submitted details in a formatted, scrollable timeline clearly showing:
   - Job titles
   - Company names
   - Employment dates
   - Key responsibilities
 
-**Stretch:**
-- Demonstrate editable career history forms, showing successful updates and error handling.
+**Stretch items:**
+- Editable career history form, demonstrate updating and confirm successful changes through frontend notifications.
+- Display accomplishments associated with career entries.
 
-**4. Education Information Display (Core Requirement)**
-- Display structured education information:
+**4. Education Information Display**
+- Display user's stored education details clearly on the frontend:
   - Degrees earned
   - Institutions
   - Attendance dates
   - GPA
 
-**Stretch:**
-- Showcase editable education update forms with add/remove functionality.
-- Demonstrate immediate feedback upon submission or cancellation.
+**Stretch items:**
+- Editable education information form with add/remove functionality.
+- Confirm updates through frontend notifications and immediate feedback.
 
-#### Wrap-Up
+I will be randomly selecting the order of the demos. Oh yeah ... and don't forget to write up and submit your retrospective report.
 
-- Summarize the key functionalities demonstrated.
-- Clearly mention any stretch goals you've completed.
-- Conclude by highlighting readiness for the next sprint, "Job Description Processing & AI Resume Generation".
-
-Thank you!
-
+See you Tuesday,
+Prof Bill

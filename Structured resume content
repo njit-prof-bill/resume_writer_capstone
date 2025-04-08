@@ -1,0 +1,108 @@
+## **Specification: Structured Resume Content (AI Output Format)**
+
+### **Purpose:**
+Defines the exact JSON structure of the AI-generated resume text.
+This format is **required output** from the AI service, ensuring downstream services (LaTeX formatting and resume assembly) can reliably consume the data.
+
+---
+
+### **Resume JSON Structure**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| fullName | String | Full name of the user. |
+| contact | Object | User's contact details. |
+| contact.email | String | Email address. |
+| contact.phone | String | Phone number (optional). |
+| contact.location | String | City and state or country (optional). |
+| summary | String | Professional summary (1-2 paragraphs). |
+| workExperience | Array of Objects | List of work experiences, ordered most recent first. |
+| workExperience[].jobTitle | String | Job title. |
+| workExperience[].company | String | Company name. |
+| workExperience[].startDate | String | Start date (format: YYYY-MM). |
+| workExperience[].endDate | String | End date (or \"Present\"). |
+| workExperience[].responsibilities | Array of Strings | Bullet points of responsibilities/accomplishments. |
+| education | Array of Objects | Educational qualifications, ordered most recent first. |
+| education[].degree | String | Degree title (e.g., \"Bachelor of Science in Computer Science\"). |
+| education[].institution | String | Name of the school or university. |
+| education[].startDate | String | Start date (format: YYYY-MM). |
+| education[].endDate | String | End date (or \"Present\"). |
+| education[].gpa | String | GPA if available (optional). |
+| skills | Array of Strings | List of key skills tailored to the job description. |
+
+---
+
+### **Example AI Output:**
+
+```json
+{
+  "fullName": "Jane Doe",
+  "contact": {
+    "email": "jane.doe@example.com",
+    "phone": "(123) 456-7890",
+    "location": "San Francisco, CA"
+  },
+  "summary": "Experienced software engineer with a strong background in developing scalable web applications. Proven ability to lead teams and deliver projects on time.",
+  "workExperience": [
+    {
+      "jobTitle": "Senior Software Engineer",
+      "company": "TechCorp Solutions",
+      "startDate": "2021-06",
+      "endDate": "Present",
+      "responsibilities": [
+        "Led a team of 5 developers to build scalable web applications.",
+        "Implemented CI/CD pipelines to improve deployment efficiency.",
+        "Collaborated with cross-functional teams to define product requirements."
+      ]
+    },
+    {
+      "jobTitle": "Software Engineer",
+      "company": "Innovatech Labs",
+      "startDate": "2018-09",
+      "endDate": "2021-05",
+      "responsibilities": [
+        "Developed RESTful APIs for e-commerce applications.",
+        "Optimized database queries to improve application performance.",
+        "Participated in code reviews and mentoring junior developers."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Science in Computer Science",
+      "institution": "University of Technology",
+      "startDate": "2014-09",
+      "endDate": "2018-06",
+      "gpa": "3.8"
+    }
+  ],
+  "skills": [
+    "JavaScript",
+    "React",
+    "Node.js",
+    "AWS",
+    "Agile Development",
+    "Problem-Solving"
+  ]
+}
+```
+
+---
+
+### **Implementation Notes for Students (Prompting Tips):**
+
+- When prompting the AI, students **must** instruct the model to return data strictly in this format.
+- Responses should avoid markdown, rich text, or additional commentary.
+- Recommend adding prompt instructions like:
+  > "Please return your response as a strict JSON object in the following structure: [insert schema above]. Do not include any explanation or additional text."
+
+- Optionally, validate AI output server-side before storing or using in downstream services.
+
+---
+
+### Why this matters:
+- Consistent and structured output = easy for backend and LaTeX templating to consume.
+- Removes ambiguity in AI responses.
+- Future-proof: easy to extend (e.g., add awards, publications, or certifications).
+
+---
