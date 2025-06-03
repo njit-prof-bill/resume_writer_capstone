@@ -46,122 +46,121 @@ This project will provide students with experience in full-stack web development
 
 ---
 
-## Project Requirements by Sprint
+## 💼 Project Sprint Specifications: AI-Powered Resume Writer
 
-### Sprint 0: Authentication & Access Control
+### 🛠️ Sprint 0: Authentication & Onboarding
 
-#### Core Requirements (Backend & Auth Provider)
+#### 🎯 Purpose:
 
-1. Implement email + password registration and login
-2. Implement OAuth login with one provider (e.g., Google)
-3. Redirect verified users to the home page
-4. Allow users to log out
+Establish the authentication and access control system that governs user registration, login, and session management. This sprint ensures the platform can securely distinguish users and support account-based workflows in later sprints.
 
-#### Frontend
+#### 📄 Sprint 0 APIs
 
-5. Build landing page with login/register links
-6. Build registration form (username, password, confirm password)
-7. Build login form with error feedback
-8. Redirect to home page after login
-9. Add logout button to home page
-10. Show error messages for invalid credentials
+* `POST /api/auth/register` — Register a new user with email and password
+* `POST /api/auth/login` — Login and receive a session token
+* `POST /api/auth/oauth` *(Optional)* — OAuth login via third-party (e.g., Google)
+* `POST /api/auth/forgot-password` *(Optional)* — Initiate password reset
+* `POST /api/auth/verify-email` *(Optional)* — Verify new user email
+* `GET /api/user/profile` / `PUT /api/user/profile` — Retrieve or update user details
 
-#### Stretch
+#### 🧑‍💻 Sprint 0 Frontend Features
 
-11. Implement multi-provider OAuth login
-12. Add account verification (email validation)
-13. Implement MFA support
-14. Implement “Forgot Password” flow
-
----
-
-### Sprint 1: Career & Education Management
-
-#### Backend (APIs)
-
-1. `POST /api/resumes/upload` — Upload & parse resume text
-2. `POST /api/career/freeform` — Submit career history manually
-3. `GET /api/career/history` — Retrieve all stored career entries
-4. `PUT /api/career/:id` — Update a specific career item
-5. `POST /api/education/freeform` — Submit education history
-6. `GET /api/education/history` — Retrieve education data
-7. `PUT /api/education/:id` — Update a specific education item
-8. De-dupe freeform career and education submissions
-
-#### Frontend
-
-9. UI for uploading and submitting resume text
-10. UI form for manually entering career history
-11. Table view for displaying saved career items
-12. Inline editing or modal update for career items
-13. UI for manually entering education history
-14. Table view and editing for education records
-15. Resume upload progress and success/failure messages
+* Landing page with login and registration options
+* Registration form with validation (password confirmation, email format)
+* Login form with error handling and session management
+* Redirect to home page on successful login
+* Logout button
+* (Optional) Support for OAuth login
+* (Optional) UI for forgot password and email verification
 
 ---
 
-### Sprint 2: AI Resume Generation
+### 📚 Sprint 1: Personal History Collection & Structuring
 
-#### Backend (APIs)
+#### 🎯 Purpose:
 
-1. `POST /api/jobs/submit` — Paste and store job descriptions
-2. `GET /api/jobs/:id` — Retrieve specific job description
-3. `GET /api/jobs` — List all user-submitted job descriptions
-4. `POST /api/resumes/generate` — Generate resume text using AI
-5. De-dupe job descriptions
-6. Structure resume content before formatting (for downstream LaTeX use)
+Collect and consolidate the user’s full professional and academic history. Users can submit this history via resumes, biographical documents (e.g., LinkedIn), or freeform text. These sources are combined into a single corpus and parsed with AI to extract structured information across five categories:
 
-#### Frontend
+1. Name and Contact Information
+2. Career Objectives
+3. Skills
+4. Job History
+5. Education
 
-7. UI to paste or input job descriptions
-8. (Stretch) View previously submitted job descriptions
-9. UI to select job and resume and trigger resume generation
-10. Display generated resume text with success message
-11. Show generation progress/status indicator
+The goal is to produce an editable, structured profile that forms the basis for future resume generation.
 
----
+#### 📄 Sprint 1 APIs
 
-### Sprint 3: Resume Formatting, Download & Advice
+* `POST /api/history/upload` — Upload resumes or biographical documents
+* `POST /api/history/freeform` — Submit unstructured text content
+* `GET /api/history/structured` — Retrieve parsed and structured personal history
+* `PUT /api/history/:section` — Update one of the five profile sections
+* *(Optional)* `GET /api/history/raw` — View raw submitted content before parsing
+* *(Optional)* `POST /api/history/merge` — Reprocess combined history corpus
 
-#### Backend (APIs)
+#### 🧑‍💻 Sprint 1 Frontend Features
 
-1. `POST /api/resumes/format` — Format resume (Markdown by default)
-2. `GET /api/resumes/download/{formattedResumeId}` — Download formatted file
-3. `POST /api/jobs/advice` — Generate AI-based advice for improving job success
-4. (Stretch) `POST /api/user/job-applications` — Record job/resume application
-5. (Stretch) `GET /api/user/job-applications` — View past job applications
-6. (Stretch) `GET /api/templates` — View available resume templates
-7. (Stretch) Add support for LaTeX and styled formats (templateId in formatting)
+* File upload area for resumes and LinkedIn documents
+* Text input area for pasting or typing freeform biographical text
+* Submit button to initiate processing
+* Notification when parsing is complete
+* UI to view and edit:
 
-#### Frontend
+  * Contact Info
+  * Career Objectives
+  * Skills
+  * Job History
+  * Education
 
-8. Format resume and display download link
-9. Display job-seeking advice based on resume and job
-10. (Stretch) Display job application tracking history
-11. (Stretch) UI for selecting resume templates and styles
-
----
-
-### Global Stretch Goals (Optional Throughout)
-
-* View and update user contact info parsed from resumes
-* Add a dedicated skills section (parse and store skills)
-* Manual entry of skills
-* Skill de-duping
-* Resume viewer for uploaded content
-* Viewer/editor for freeform career and education data
-* Application dashboard summarizing job interactions
+* Loading and error states for processing
 
 ---
 
-### Summary by Sprint
+### 🧠 Sprint 2: Job Description & AI Resume Generation
 
-| Sprint   | Category  | Task Count          |
-| -------- | --------- | ------------------- |
-| Sprint 1 | Auth & UX | 10 core + 4 stretch |
-| Sprint 2 | API & UX  | 8 API + 7 UX        |
-| Sprint 3 | API & UX  | 6 API + 5 UX        |
-| Sprint 4 | API & UX  | 7 API + 4 UX        |
-| Stretch  | Global    | 7+ additional ideas |
+#### 🎯 Purpose:
+
+Enable users to generate tailored resumes based on specific job postings. Users submit job descriptions, and the system uses their personal history (from Sprint 1) to generate structured resume content using AI. Resume generation is asynchronous and requires users to track completion status.
+
+#### 📄 Sprint 2 APIs
+
+* `POST /api/jobs/submit` — Submit a job description for targeting
+* `GET /api/jobs/history` *(Optional)* — Retrieve past submitted job descriptions
+* `POST /api/resumes/generate` — Generate structured resume content using AI
+* `GET /api/resumes/status/{resumeId}` — Check status of resume generation
+
+#### 🧑‍💻 Sprint 2 Frontend Features
+
+* Job description input form (paste or type)
+* (Optional) Job description history view
+* Selection UI for resume generation (select job + history)
+* Trigger button for resume generation
+* Polling status indicator for generation completion
+* Display generated resume content (read-only)
+* Error feedback for invalid inputs or failures
 
 ---
+
+### 🖨️ Sprint 3: Resume Formatting, Advice & Tracking
+
+#### 🎯 Purpose:
+
+Finalize and download the AI-generated resume by formatting it into a readable file (Markdown, plain text, or HTML). Additionally, provide personalized job-seeking advice based on how well the resume matches the job description. Advanced formatting and job tracking features are encouraged as stretch goals.
+
+#### 📄 Sprint 3 APIs
+
+* `POST /api/resumes/format` — Format resume content into a downloadable file
+* `GET /api/resumes/download/{formattedResumeId}` — Download the formatted file
+* `POST /api/jobs/advice` — Generate advice based on job description and resume
+* *(Stretch)* `POST /api/user/job-applications` — Log job/resume submissions
+* *(Stretch)* `GET /api/user/job-applications` — Retrieve submission history
+* *(Stretch)* `GET /api/templates` — Retrieve available formatting templates
+
+#### 🧑‍💻 Sprint 3 Frontend Features
+
+* UI to select resume and format type (Markdown, HTML, plain text)
+* Button to format resume and generate download link
+* Advice panel to request and display job-seeking advice
+* (Stretch) UI to track submitted applications (history view)
+* (Stretch) UI to select formatting templates and visual styles
+* User feedback, loading states, and error handling for all actions
