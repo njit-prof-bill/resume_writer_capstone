@@ -1,488 +1,204 @@
-Below is a structured list of **RESTful API endpoints** required to support the **AI-Powered Resume Writer** project. Optional features are marked as **(Optional)**.
+## 📚 Sprint 1: Personal History Collection & Structuring
+
+### 🎯 Purpose:
+
+Collect and consolidate the user’s full professional and academic history. Users can submit this history via resumes, biographical documents (e.g., LinkedIn), or freeform text. These sources are combined into a single corpus and parsed with AI to extract structured information across five categories:
+
+1. Name and Contact Information
+2. Career Objectives
+3. Skills
+4. Job History
+5. Education
+
+The goal is to produce an editable, structured profile that forms the basis for future resume generation.
+
+### 📄 Sprint 1 API Specifications
 
 ---
 
-### **User Authentication & Management**
-1. **User Registration**
-   - `POST /api/auth/register`
-   - **Request:** `{ "email": "user@example.com", "password": "securepassword" }`
-   - **Response:** `{ "userId": "123", "email": "user@example.com", "token": "jwt_token" }`
+### **1. POST /api/history/upload**
 
-2. **User Login**
-   - `POST /api/auth/login`
-   - **Request:** `{ "email": "user@example.com", "password": "securepassword" }`
-   - **Response:** `{ "userId": "123", "email": "user@example.com", "token": "jwt_token" }`
+**Purpose:** Accepts file uploads (PDF or DOCX resumes, LinkedIn exports) and extracts raw text.
 
-3. **OAuth Login (Optional)**
-   - `POST /api/auth/oauth`
-   - **Request:** `{ "provider": "google", "token": "oauth_access_token" }`
-   - **Response:** `{ "userId": "123", "email": "user@example.com", "token": "jwt_token" }`
+**Business Logic:**
 
-4. **User Profile Management**
-   - `GET /api/user/profile`
-   - `PUT /api/user/profile`
-   - **Allows users to retrieve and update their profile details (e.g., name, email, preferences).**
+* Stores uploaded file under the authenticated user.
+* Extracts text content using file parser.
+* Appends extracted text to user's history corpus.
+* Automatically triggers AI parsing pipeline.
 
----
+**Request Specification:**
 
-### **Career History Management**
-5. **Upload Resume (Text Parsing & Storage)**
-   - `POST /api/resumes/upload`
-   - **Request:** `{ "file": "resume.pdf" }`
-   - **Response:** `{ "resumeId": "456", "status": "processing" }`
+| Field | Type                       | Required | Description                      |
+| ----- | -------------------------- | -------- | -------------------------------- |
+| file  | File (multipart/form-data) | Yes      | Resume or bio document to upload |
 
-6. **Submit Free-Form Career History**
-   - `POST /api/resumes/history`
-   - **Request:** `{ "text": "Work history in free-form text..." }`
-   - **Response:** `{ "historyId": "789", "status": "saved" }`
+**Request Example:** (Form-encoded)
 
-7. **Submit Career History via Form**
-   - `POST /api/resumes/form`
-   - **Request:**
-     ```json
-     {
-       "jobs": [
-         {
-           "title": "Software Engineer",
-           "company": "Tech Corp",
-           "startDate": "2022-01-01",
-           "endDate": "2023-06-01",
-           "responsibilities": "Developed backend systems..."
-         }
-       ]
-     }
-     ```
-   - **Response:** `{ "historyId": "101", "status": "saved" }`
+* `Content-Type: multipart/form-data`
 
-8. **Retrieve Stored Career History**
-   - `GET /api/resumes/history`
-   - **Response:**
-     ```json
-     {
-       "jobs": [
-         {
-           "title": "Software Engineer",
-           "company": "Tech Corp",
-           "startDate": "2022-01-01",
-           "endDate": "2023-06-01",
-           "responsibilities": "Developed backend systems..."
-         }
-       ]
-     }
-     ```
+**Response Specification:**
 
----
+| Field  | Type   | Description           |
+| ------ | ------ | --------------------- |
+| status | String | Upload status message |
+| fileId | String | ID of uploaded file   |
 
-### **Job Description Processing**
-9. **Submit Job Description for Resume Matching**
-   - `POST /api/jobs/submit`
-   - **Request:** `{ "text": "Job description text..." }`
-   - **Response:** `{ "jobId": "234", "status": "saved" }`
-
-10. **Retrieve Previously Submitted Job Descriptions (Optional)**
-   - `GET /api/jobs/history`
-   - **Response:**
-     ```json
-     {
-       "jobs": [
-         {
-           "jobId": "234",
-           "text": "Job description text...",
-           "submittedAt": "2025-03-02T10:00:00Z"
-         }
-       ]
-     }
-     ```
-
----
-
-### **AI-Powered Resume Generation**
-11. **Generate Resume Based on Career History & Job Description**
-   - `POST /api/resumes/generate`
-   - **Request:**
-     ```json
-     {
-       "jobId": "234",
-       "historyId": "101"
-     }
-     ```
-   - **Response:** `{ "resumeId": "567", "status": "processing" }`
-
-12. **Check Resume Generation Status**
-   - `GET /api/resumes/status/{resumeId}`
-   - **Response:** `{ "resumeId": "567", "status": "completed" }`
-
----
-
-### **LaTeX-Based Resume Formatting**
-13. **Get Available Resume Templates**
-   - `GET /api/templates`
-   - **Response:**
-     ```json
-     {
-       "templates": [
-         { "templateId": "default", "name": "Standard Resume" },
-         { "templateId": "modern", "name": "Modern Style Resume" }
-       ]
-     }
-     ```
-
-14. **Format Resume Using Selected Template**
-   - `POST /api/resumes/format`
-   - **Request:**
-     ```json
-     {
-       "resumeId": "567",
-       "templateId": "default"
-     }
-     ```
-   - **Response:** `{ "formattedResumeId": "789", "downloadUrl": "/api/resumes/download/789" }`
-
-15. **Download Formatted Resume**
-   - `GET /api/resumes/download/{formattedResumeId}`
-   - **Response:** Binary PDF file
-
----
-
-### **Resume & Job Tracking (Optional)**
-16. **Store Resume and Job Application History (Optional)**
-   - `POST /api/user/job-applications`
-   - **Request:**
-     ```json
-     {
-       "jobId": "234",
-       "resumeId": "567",
-       "status": "submitted"
-     }
-     ```
-   - **Response:** `{ "applicationId": "901", "status": "saved" }`
-
-17. **Retrieve Past Resume Applications (Optional)**
-   - `GET /api/user/job-applications`
-   - **Response:**
-     ```json
-     {
-       "applications": [
-         {
-           "jobId": "234",
-           "resumeId": "567",
-           "status": "submitted",
-           "appliedAt": "2025-03-02T12:00:00Z"
-         }
-       ]
-     }
-     ```
-
----
-
-### **Summary of API Categories**
-- **Authentication & User Management**
-  - `/api/auth/register`, `/api/auth/login`, `/api/auth/oauth` (Optional), `/api/user/profile`
-
-- **Career History Management**
-  - `/api/resumes/upload`, `/api/resumes/history`, `/api/resumes/form`, `/api/resumes/history`
-
-- **Job Description Processing**
-  - `/api/jobs/submit`, `/api/jobs/history` (Optional)
-
-- **AI Resume Generation**
-  - `/api/resumes/generate`, `/api/resumes/status/{resumeId}`
-
-- **Resume Formatting (LaTeX Service)**
-  - `/api/templates`, `/api/resumes/format`, `/api/resumes/download/{formattedResumeId}`
-
-- **Job Application & Resume Tracking (Optional)**
-  - `/api/user/job-applications`
-
----
-
-### **Next Steps**
-- Define **API request/response schemas** in detail (e.g., OpenAPI/Swagger spec).
-- Provide **error handling & authentication mechanisms** (e.g., JWT-based authentication).
-- Define rate limits or access restrictions for AI API calls.
-
----
-
-### **Detailed RESTful API Specifications for AI-Powered Resume Writer**
-
-Below are **detailed API specifications** based on the **APIs.md** document, ensuring clarity and coverage for both frontend and backend teams. Each API is broken down by **resource, HTTP verb, parameters, request/response body, and business logic**.
-
----
-
-## API Specifications ##
-
-### **1. Career History Management APIs**
-These APIs allow users to manage their **career history**, which serves as the basis for AI-generated resumes.
-
-#### **1.1 Upload Resume (Text Parsing & Storage)**
-- **Endpoint:** `POST /api/resumes/upload`
-- **Purpose:** Allows users to upload an existing resume (PDF or DOCX). The system extracts structured career history.
-- **Business Logic:**
-  - The file is processed asynchronously.
-  - A resume parsing service extracts text and formats it.
-  - The parsed data is stored in a structured format.
-
-##### **Request**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| file | File (PDF/DOCX) | Yes | Resume file to be parsed and stored |
-
-##### **Example Request**
-```http
-POST /api/resumes/upload
-Content-Type: multipart/form-data
-
-{
-  "file": "resume.pdf"
-}
-```
-
-##### **Response**
-| Field | Type | Description |
-|-------|------|-------------|
-| resumeId | String | Unique ID for the uploaded resume |
-| status | String | Processing status (`processing`, `completed`, `failed`) |
+**Response Example:**
 
 ```json
 {
-  "resumeId": "456",
+  "status": "processing",
+  "fileId": "abc123"
+}
+```
+
+---
+
+### **2. POST /api/history/freeform**
+
+**Purpose:** Accepts unstructured biographical text submitted directly by the user.
+
+**Business Logic:**
+
+* Stores the freeform text input.
+* Appends to user history corpus.
+* Automatically triggers AI parsing.
+
+**Request Specification:**
+
+| Field | Type   | Required | Description                 |
+| ----- | ------ | -------- | --------------------------- |
+| text  | String | Yes      | User-entered biography text |
+
+**Request Example:**
+
+```json
+{
+  "text": "I've worked as a data scientist at three different companies since 2017..."
+}
+```
+
+**Response Specification:**
+
+| Field  | Type   | Description    |
+| ------ | ------ | -------------- |
+| status | String | Parsing status |
+
+**Response Example:**
+
+```json
+{
   "status": "processing"
 }
 ```
 
 ---
 
-#### **1.2 Submit Free-Form Career History**
-- **Endpoint:** `POST /api/resumes/history`
-- **Purpose:** Allows users to manually enter their career history as free-form text.
-- **Business Logic:**
-  - The system stores the raw text as unstructured data.
-  - AI processing refines and formats the text upon resume generation.
+### **3. GET /api/history/structured**
 
-##### **Request**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| text | String | Yes | Raw text of career history |
+**Purpose:** Returns the user’s parsed and structured personal history.
 
-##### **Example Request**
-```json
-{
-  "text": "Software Engineer at TechCorp from 2020-2023. Developed AI-based applications."
-}
-```
+**Business Logic:**
 
-##### **Response**
-| Field | Type | Description |
-|-------|------|-------------|
-| historyId | String | Unique ID for the stored career history |
-| status | String | Processing status (`saved`) |
+* Returns a unified JSON representation of five sections parsed from user data: contact, objectives, skills, jobs, education.
+
+**Response Specification:**
+
+| Field      | Type   | Description            |
+| ---------- | ------ | ---------------------- |
+| contact    | Object | User contact info      |
+| objectives | String | User's career goals    |
+| skills     | Array  | List of skills         |
+| jobs       | Array  | Job history records    |
+| education  | Array  | Educational background |
+
+**Response Example:**
 
 ```json
 {
-  "historyId": "789",
-  "status": "saved"
-}
-```
-
----
-
-#### **1.3 Submit Career History via Structured Form**
-- **Endpoint:** `POST /api/resumes/form`
-- **Purpose:** Enables users to input structured career history through a form.
-- **Business Logic:**
-  - Stores structured work experience details.
-  - Supports multiple job entries.
-
-##### **Request**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| jobs | Array | Yes | List of job history entries |
-
-```json
-{
-  "jobs": [
-    {
-      "title": "Software Engineer",
-      "company": "Tech Corp",
-      "startDate": "2022-01-01",
-      "endDate": "2023-06-01",
-      "responsibilities": "Developed backend systems."
-    }
-  ]
-}
-```
-
-##### **Response**
-| Field | Type | Description |
-|-------|------|-------------|
-| historyId | String | Unique ID for the stored history |
-| status | String | Processing status (`saved`) |
-
-```json
-{
-  "historyId": "101",
-  "status": "saved"
+  "contact": {
+    "fullName": "Jane Doe",
+    "email": "jane@example.com",
+    "phone": "(123) 456-7890"
+  },
+  "objectives": "To apply my data science expertise to solve real-world problems...",
+  "skills": ["Python", "TensorFlow", "SQL"],
+  "jobs": [ ... ],
+  "education": [ ... ]
 }
 ```
 
 ---
 
-#### **1.4 Retrieve Stored Career History**
-- **Endpoint:** `GET /api/resumes/history`
-- **Purpose:** Fetch stored career history for a user.
-- **Business Logic:**
-  - Returns all stored job experiences for the authenticated user.
+### **4. PUT /api/history/\:section**
 
-##### **Response**
+**Purpose:** Updates a specific section of the user’s structured personal history.
+
+**Business Logic:**
+
+* `:section` must be one of: `contact`, `objectives`, `skills`, `jobs`, `education`.
+* Validates section structure.
+* Replaces or merges the new content into existing structured data.
+
+**Request Specification:**
+
+| Parameter      | Type   | Required | Description                        |
+| -------------- | ------ | -------- | ---------------------------------- |
+| section (path) | String | Yes      | Section to update                  |
+| body           | Varies | Yes      | JSON matching structure of section |
+
+**Request Example:**
+
+```
+PUT /api/history/skills
+```
+
 ```json
 {
-  "jobs": [
-    {
-      "title": "Software Engineer",
-      "company": "Tech Corp",
-      "startDate": "2022-01-01",
-      "endDate": "2023-06-01",
-      "responsibilities": "Developed backend systems."
-    }
-  ]
+  "skills": ["JavaScript", "SQL", "TensorFlow"]
+}
+```
+
+**Response Specification:**
+
+| Field  | Type   | Description   |
+| ------ | ------ | ------------- |
+| status | String | Update result |
+
+**Response Example:**
+
+```json
+{
+  "status": "updated"
 }
 ```
 
 ---
 
-### **2. Job Description Processing APIs**
-These APIs allow users to submit and retrieve job descriptions to tailor their resumes accordingly.
+### **5. POST /api/history/merge** *(Optional)*
 
-#### **2.1 Submit Job Description**
-- **Endpoint:** `POST /api/jobs/submit`
-- **Purpose:** Users submit job descriptions for resume customization.
-- **Business Logic:**
-  - Stores job descriptions.
-  - The system later matches job descriptions with the user’s history.
+**Purpose:** Re-process the full corpus of user-submitted text using the latest AI parsing logic.
 
-##### **Request**
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| text | String | Yes | Job description text |
+**Business Logic:**
 
-##### **Response**
+* Combines uploaded documents and freeform text.
+* Runs fresh AI parsing pass.
+* Overwrites existing structured history with new results.
+
+**Request Specification:**
+*No body.*
+
+**Response Specification:**
+
+| Field  | Type   | Description                    |
+| ------ | ------ | ------------------------------ |
+| status | String | Status of re-parsing operation |
+
+**Response Example:**
+
 ```json
 {
-  "jobId": "234",
-  "status": "saved"
+  "status": "re-parsed"
 }
 ```
-
----
-
-#### **2.2 Retrieve Job Descriptions**
-- **Endpoint:** `GET /api/jobs/history`
-- **Purpose:** Retrieves past job descriptions submitted by the user.
-- **Business Logic:**
-  - Allows users to review previous job postings.
-
-##### **Response**
-```json
-{
-  "jobs": [
-    {
-      "jobId": "234",
-      "text": "Job description text...",
-      "submittedAt": "2025-03-02T10:00:00Z"
-    }
-  ]
-}
-```
-
----
-
-### **3. AI Resume Generation APIs**
-These APIs manage AI-powered resume creation.
-
-#### **3.1 Generate Resume**
-- **Endpoint:** `POST /api/resumes/generate`
-- **Purpose:** Generates a resume based on job descriptions and career history.
-- **Business Logic:**
-  - Uses AI to create a tailored resume.
-
-##### **Request**
-```json
-{
-  "jobId": "234",
-  "historyId": "101"
-}
-```
-
-##### **Response**
-```json
-{
-  "resumeId": "567",
-  "status": "processing"
-}
-```
-
----
-
-#### **3.2 Check Resume Status**
-- **Endpoint:** `GET /api/resumes/status/{resumeId}`
-- **Purpose:** Returns the status of resume generation.
-- **Business Logic:**
-  - Monitors processing progress.
-
-##### **Response**
-```json
-{
-  "resumeId": "567",
-  "status": "completed"
-}
-```
-
----
-
-### **4. Resume Formatting & Download APIs**
-#### **4.1 Get Available Resume Templates**
-- **Endpoint:** `GET /api/templates`
-- **Purpose:** Returns available LaTeX templates.
-
-##### **Response**
-```json
-{
-  "templates": [
-    { "templateId": "default", "name": "Standard Resume" },
-    { "templateId": "modern", "name": "Modern Style Resume" }
-  ]
-}
-```
-
----
-
-#### **4.2 Format Resume**
-- **Endpoint:** `POST /api/resumes/format`
-- **Purpose:** Formats an AI-generated resume using LaTeX.
-- **Business Logic:**
-  - Converts text into a downloadable PDF.
-
-##### **Request**
-```json
-{
-  "resumeId": "567",
-  "templateId": "default"
-}
-```
-
-##### **Response**
-```json
-{
-  "formattedResumeId": "789",
-  "downloadUrl": "/api/resumes/download/789"
-}
-```
-
----
-
-#### **4.3 Download Formatted Resume**
-- **Endpoint:** `GET /api/resumes/download/{formattedResumeId}`
-- **Purpose:** Allows users to download formatted resumes.
-- **Response:** Binary PDF file.
-
----
