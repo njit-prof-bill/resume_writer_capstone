@@ -48,7 +48,7 @@ This project will provide students with experience in full-stack web development
 
 ## Project Requirements by Sprint
 
-### Sprint 1: Authentication & Access Control
+### Sprint 0: Authentication & Access Control
 
 #### Core Requirements (Backend & Auth Provider)
 
@@ -75,7 +75,7 @@ This project will provide students with experience in full-stack web development
 
 ---
 
-### Sprint 2: Career & Education Management
+### Sprint 1: Career & Education Management
 
 #### Backend (APIs)
 
@@ -100,7 +100,7 @@ This project will provide students with experience in full-stack web development
 
 ---
 
-### Sprint 3: AI Resume Generation
+### Sprint 2: AI Resume Generation
 
 #### Backend (APIs)
 
@@ -121,7 +121,7 @@ This project will provide students with experience in full-stack web development
 
 ---
 
-### Sprint 4: Resume Formatting, Download & Advice
+### Sprint 3: Resume Formatting, Download & Advice
 
 #### Backend (APIs)
 
