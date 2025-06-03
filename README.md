@@ -7,14 +7,14 @@ This project is an AI-powered resume writer designed to help job seekers tailor 
 
 1. **User Authentication and Registration**
    - The system will support user accounts with self-registration and sign-in functionality.
-   - Initial authentication will use a username and password system, with optional OAuth-based login (e.g., Google authentication).
+   - Initial authentication will use a username and password system, with Stretch OAuth-based login (e.g., Google authentication).
 
 2. **Career History Management**
    - Users will be able to maintain a career history that serves as the foundation for generated resumes.
    - Multiple input methods will be supported, including:
      - Uploading existing resumes (parsing text where possible).
      - Free-form text entry.
-     - An optional structured online form.
+     - An Stretch structured online form.
 
 3. **Job Description Processing**
    - The system will allow users to paste job descriptions, which will serve as input for resume customization.
@@ -58,9 +58,9 @@ Establish the authentication and access control system that governs user registr
 
 * `POST /api/auth/register` — Register a new user with email and password
 * `POST /api/auth/login` — Login and receive a session token
-* `POST /api/auth/oauth` *(Optional)* — OAuth login via third-party (e.g., Google)
-* `POST /api/auth/forgot-password` *(Optional)* — Initiate password reset
-* `POST /api/auth/verify-email` *(Optional)* — Verify new user email
+* `POST /api/auth/oauth` *(Stretch)* — OAuth login via third-party (e.g., Google)
+* `POST /api/auth/forgot-password` *(Stretch)* — Initiate password reset
+* `POST /api/auth/verify-email` *(Stretch)* — Verify new user email
 * `GET /api/user/profile` / `PUT /api/user/profile` — Retrieve or update user details
 
 #### 🧑‍💻 Sprint 0 Frontend Features
@@ -70,8 +70,8 @@ Establish the authentication and access control system that governs user registr
 * Login form with error handling and session management
 * Redirect to home page on successful login
 * Logout button
-* (Optional) Support for OAuth login
-* (Optional) UI for forgot password and email verification
+* (Stretch) Support for OAuth login
+* (Stretch) UI for forgot password and email verification
 
 ---
 
@@ -95,8 +95,7 @@ The goal is to produce an editable, structured profile that forms the basis for 
 * `POST /api/history/freeform` — Submit unstructured text content
 * `GET /api/history/structured` — Retrieve parsed and structured personal history
 * `PUT /api/history/:section` — Update one of the five profile sections
-* *(Optional)* `GET /api/history/raw` — View raw submitted content before parsing
-* *(Optional)* `POST /api/history/merge` — Reprocess combined history corpus
+* *(Stretch)* `POST /api/history/merge` — Reprocess combined history corpus
 
 #### 🧑‍💻 Sprint 1 Frontend Features
 
@@ -125,14 +124,14 @@ Enable users to generate tailored resumes based on specific job postings. Users 
 #### 📄 Sprint 2 APIs
 
 * `POST /api/jobs/submit` — Submit a job description for targeting
-* `GET /api/jobs/history` *(Optional)* — Retrieve past submitted job descriptions
+* `GET /api/jobs/history` *(Stretch)* — Retrieve past submitted job descriptions
 * `POST /api/resumes/generate` — Generate structured resume content using AI
 * `GET /api/resumes/status/{resumeId}` — Check status of resume generation
 
 #### 🧑‍💻 Sprint 2 Frontend Features
 
 * Job description input form (paste or type)
-* (Optional) Job description history view
+* (Stretch) Job description history view
 * Selection UI for resume generation (select job + history)
 * Trigger button for resume generation
 * Polling status indicator for generation completion
