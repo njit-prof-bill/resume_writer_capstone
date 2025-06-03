@@ -89,7 +89,7 @@ Collect and consolidate the user’s full professional and academic history. Use
 
 The goal is to produce an editable, structured profile that forms the basis for future resume generation.
 
-#### 📄 Sprint 1 APIs
+#### 📄 Sprint  APIs
 
 * `POST /api/history/upload` — Upload resumes or biographical documents
 * `POST /api/history/freeform` — Submit unstructured text content
